@@ -56,40 +56,56 @@ int	ft_count_if(char **tab,int length,int(*f)(char*))
 	return count;
 }
 
-int	ft_is_sort(int *tab, int length, int (*f)(int,int))
+int	ft_is_sort_asc(int *tab, int length, int (*f)(int, int))
 {
 	int	i;
 
 	i = 0;
-	while(i < length - 1)
+	while (i < length - 1)
 	{
-		if(!f(tab[i],tab[i+1]))
+		if ((*f)(tab[i], tab[i + 1]) > 0)
 			return (0);
 		i++;
 	}
-	return 1;			
+	return (1);
 }
 
-int	to42(int x)
+int	ft_is_sort_desc(int *tab, int length, int (*f)(int, int))
 {
-	return 42;
+	int	i;
+
+	i = length - 1;
+	while (i > 0)
+	{
+		if((*f)(tab[i], tab[i - 1]) > 0)
+			return (0);
+		i--;
+	}
+	return (1);
+}
+int	ft_is_sort(int *tab, int length, int (*f)(int, int))
+{
+	return (ft_is_sort_asc(tab, length, f)
+			||ft_is_sort_desc(tab, length, f));
+}
+
+int        ft_intcmp(int a, int b)
+{
+	return (a - b);
 }
 
 int main()
 {
-	int x[] = {1,2,3,4,5,6,7,8,9};
+	int x[] = {9,8,7,6,6,4,3,2,1};
+	int y[] = {1,2,3,4,4,6,7,8,9};
+	int z[] = {9,8,3,4,0,0,7,20,9};
 
-	int i =0;
-	int *arr = ft_map(x,9,to42);
-	while(i < 9)
-	{
-		printf("%d\t",arr[i]);
-		i++;
-	}
-
+	printf("x = %d\n",ft_is_sort(x, 9, ft_intcmp));
+	printf("y = %d\n",ft_is_sort(y, 9, ft_intcmp));
+	printf("z = %d\n",ft_is_sort(z, 9, ft_intcmp));
 
 	//void (*func)(int*,int,void (*f)(int)) = &ft_foreach;
 	//printf("%d",*func);
-//	ft_foreach(x,9,ft_print);
+	//	ft_foreach(x,9,ft_print);
 	return (0);
 }
